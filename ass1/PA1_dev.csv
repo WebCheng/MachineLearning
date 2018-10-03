@@ -1,0 +1,5 @@
+dummy,id,date,bedrooms,bathrooms,sqft_living,sqft_lot,floors,waterfront,view,condition,grade,sqft_above,sqft_basement,yr_built,yr_renovated,zipcode,lat,long,sqft_living15,sqft_lot15,price
+1,6414100192,12/9/2014,3,2.25,2570,7242,2,0,0,3,7,2170,400,1951,1991,98125,47.721,-122.319,1690,7639,5.38
+1,1954400510,2/18/2015,3,2,1680,8080,1,0,0,3,8,1680,0,1987,0,98074,47.6168,-122.045,1800,7503,5.1
+1,1736800520,4/3/2015,3,2.5,3560,9796,1,0,0,3,8,1860,1700,1965,0,98007,47.6007,-122.145,2210,8925,6.625 
+
