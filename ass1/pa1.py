@@ -20,8 +20,7 @@ class LinearRegression:
     def initTheta(self, nums):
         rt = []
         for i in range(0, nums):
-            rt.append(1)
-            # rt.append(np.random.random())
+            rt.append(1) 
         return rt
 
     # Cost Function
@@ -30,13 +29,9 @@ class LinearRegression:
         for i in range(0, self.dataNum):
             tmp = 0.0
             for j in range(0, self.ftNum):
-                tmp = tmp + self.thetas[j] * self.x[i][j]
-            try:
-                J += ((1.0/(2.0*self.dataNum))*(tmp - self.y[i])**2)
-            except:
-                print tmp
-                print self.y[i]
+                tmp = tmp + self.thetas[j] * self.x[i][j] 
 
+            J += ((1.0/(2.0*self.dataNum))*(tmp - self.y[i])**2) 
         return J
 
     # idx : for specific X value
@@ -51,21 +46,23 @@ class LinearRegression:
             rt += (tmp - self.y[i]) * self.x[i][idx]
         return rt
 
-    def gradientDescentReg(self, alpha=10**-1, ep=0.001, max_iter=1000, lam=0):
+    def regVal(self, lam, theta):
+        return (lam/self.dataNum) * theta
 
-        count = 0
-        converged = False
+    def gradientDescent(self, alpha=10**-1, ep=0.001, maxIter=1000, lam=0.0):
+
+        converged, count = False, 0
         self.thetas = self.initTheta(self.ftNum+1)
 
-        # J
         J = self.costFunc()
 
         while not converged:
-            
+
             idx, tmp = 0, []
             for j in range(0, self.ftNum):
-                tmp.append(self.thetas[j] - (alpha *
-                                             self.wgtVals(j) * (1.0/self.dataNum)))
+                gdVal = self.wgtVals(j) * (1.0/self.dataNum)
+                tmp.append(
+                    self.thetas[j] - (alpha * gdVal + self.regVal(lam, self.thetas[j])))
             self.thetas = tmp
 
             e = self.costFunc()
@@ -76,38 +73,7 @@ class LinearRegression:
 
             J = e
             count += 1
-            if count == max_iter:
-                print 'Max interactions exceeded!'
-                converged = True
-
-        return self.thetas
-
-    def gradientDescent(self, alpha=10**-1, ep=0.001, max_iter=1000):
-
-        count = 0
-        converged = False
-        self.thetas = self.initTheta(self.ftNum+1)
-
-        # J
-        J = self.costFunc()
-
-        while not converged:
-             
-            idx, tmp = 0, []
-            for j in range(0, self.ftNum):
-                tmp.append(self.thetas[j] - (alpha *
-                                             self.wgtVals(j) * (1.0/self.dataNum)))
-            self.thetas = tmp
-
-            e = self.costFunc()
-
-            if abs(J-e) <= ep:
-                print 'Converged, iterations: ', count, '!!!'
-                converged = True
-
-            J = e
-            count += 1
-            if count == max_iter:
+            if count == maxIter:
                 print 'Max interactions exceeded!'
                 converged = True
 
@@ -115,16 +81,19 @@ class LinearRegression:
 
 
 ################ Main Function ################
-alphaVal = 10 ** (-3)
+alphaVal = 10 ** (-1)
+ep = 0.001
+maxIter = 10000
+lam = 0.0
 
 
 """open csv"""
 print "\n --------------------------------------- ImportDaTa ---------------------------------------"
-dataSet = hp.importCsv("./Document/PA1_train.csv", ",")
+dataSet = hp.importCsv("./Document/PA1_train.csv")
 
 print "\n --------------------------------------- LinearRegression ---------------------------------------"
 lg = LinearRegression(dataSet[0], dataSet[1])
-w = lg.gradientDescent()
+w = lg.gradientDescent(alphaVal, ep, maxIter, lam)
 print w
 
 """ drawing plot """

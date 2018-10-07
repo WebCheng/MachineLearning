@@ -30,7 +30,7 @@ Import data from CSV files
 """
 
 
-def importCsv(path, delimiter, isHead=True):
+def importCsv(path, delimiter=",", isHead=True):
     x, y = [], []
     ftrNum = 0
 
