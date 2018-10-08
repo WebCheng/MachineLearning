@@ -1,5 +1,6 @@
 from datetime import datetime
 import numpy as np
+ 
 
 
 """
@@ -16,7 +17,7 @@ and returns prediction vector.
 """
 
 
-def makePrediction(thetas, datas):
+def predictVals(thetas, datas):
     rt = np.array([])
     for row in datas:
         predVal = np.dot(row, thetas)
@@ -48,6 +49,28 @@ def importCsv(path, delimiter=",", isHead=True):
                     arr[2], '%m/%d/%Y').strftime("%Y%m%d"))
 
             y.append(float(arr.pop().replace("\n", "")))
-            x.append([float(arr[0]), float(arr[2])*(10**-9)]) # ??? year
+            
+            x.append([float(arr[0])
+            ,float(arr[2])*(10**(-9))
+            ,float(arr[2])*(10**(-9))
+            ,float(arr[2])*(10**(-9))
+            # ,float(arr[3])
+            # ,float(arr[4])
+            # ,float(arr[5])/1000
+            # ,float(arr[6])/1000
+            # ,float(arr[7])
+            # ,float(arr[8])
+            # ,float(arr[9])
+            # ,float(arr[10])
+            # ,float(arr[11])
+            # ,float(arr[12])/1000
+            # ,float(arr[13])/1000
+            # ,float(arr[14])/1000
+            # ,float(arr[15])/1000
+            # ,float(arr[16])/10000
+            # ,float(arr[17])/10
+            # ,float(arr[18])/(-100)
+            # ,float(arr[19])/1000
+            ])
 
     return [x, y]
