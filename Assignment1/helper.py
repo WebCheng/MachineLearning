@@ -6,7 +6,6 @@ import numpy as np
 Get SSE given ground truth and prediction vectors
 """
 
-
 def sse(realVal, predVal):
     return sum((realVal-predVal)**2)
 
@@ -32,7 +31,6 @@ Import data from CSV files
 
 def importCsv(path, delimiter=",", isHead=True):
     x, y = [], []
-    ftrNum = 0
 
     with open(path) as f:
         lines = f.readlines()
@@ -50,7 +48,6 @@ def importCsv(path, delimiter=",", isHead=True):
                     arr[2], '%m/%d/%Y').strftime("%Y%m%d"))
 
             y.append(float(arr.pop().replace("\n", "")))
-            # x.append(map(float, arr))
-            x.append([float(arr[0]), float(arr[2])*(10**-9)])
+            x.append([float(arr[0]), float(arr[2])*(10**-9)]) # ??? year
 
     return [x, y]
