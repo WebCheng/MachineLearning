@@ -31,8 +31,8 @@ Import data from CSV files
 
 
 def importCsv(path, delimiter=",", isHead=True):
-    x, y = [], []
-
+    x, y = [], []         
+            
     with open(path) as f:
         lines = f.readlines()
 
@@ -43,17 +43,20 @@ def importCsv(path, delimiter=",", isHead=True):
                 continue
 
             arr = line.split(delimiter)
-            # print arr
-            if True:
-                arr[2] = float(datetime.strptime(
-                    arr[2], '%m/%d/%Y').strftime("%Y%m%d"))
+            
+            
+            arr[2] = float(datetime.strptime( arr[2], '%m/%d/%Y').strftime("%Y%m%d"))
+            year = float(arr[2]/10000)
+            month = float(arr[2]/100%100)
+            day = float(arr[2]%100)
 
             y.append(float(arr.pop().replace("\n", "")))
             
             x.append([float(arr[0])
-            ,float(arr[2])*(10**(-9))
-            ,float(arr[2])*(10**(-9))
-            ,float(arr[2])*(10**(-9))
+            ,year/1000
+            ,month/10
+            ,day/10
+            # ,float(arr[2])
             # ,float(arr[3])
             # ,float(arr[4])
             # ,float(arr[5])/1000
