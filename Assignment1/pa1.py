@@ -12,9 +12,9 @@ class LinearRegression:
         self.x = datas              # training examples
         self.y = result             # outcome price
         self.dataNum = len(datas)   # number of data
-        self.ftNum = len(self.x[0]) # number of Xi(feature)
+        self.ftNum = len(self.x[0])  # number of Xi(feature)
         self.thetas = []            # array of parameters
-    
+
     # Initilize parameters
     def initTheta(self, nums):
         rt = []
@@ -26,7 +26,7 @@ class LinearRegression:
     def costFunc(self):
         J = 0
         for i in range(0, self.dataNum):
-            tmp = 0.0 
+            tmp = 0.0
             for j in range(0, self.ftNum):
                 tmp = tmp + self.thetas[j] * self.x[i][j]
 
@@ -39,16 +39,16 @@ class LinearRegression:
         # Sum up all the values
         for i in range(0, self.dataNum):
             # compute (X^T*theta)
-            tmp = 0 
+            tmp = 0
             for j in range(0, self.ftNum):
                 tmp = tmp + self.thetas[j] * (self.x[i][j])
-            rt += (tmp - self.y[i]) * self.x[i][idx] 
+            rt += (tmp - self.y[i]) * self.x[i][idx]
         return rt
-    
+
     # Regulization
     def regVal(self, lam, theta):
         return (lam/self.dataNum) * theta
-    
+
     # Gradient Descent
     def gradientDescent(self, alpha=10**-1, limit=0.001, maxIter=1000, lam=0.0):
 
@@ -62,14 +62,14 @@ class LinearRegression:
             idx, tmp = 0, []
             for j in range(0, self.ftNum):
                 gdVal = self.wgtVals(j) * (1.0/self.dataNum)
-                tmp.append(self.thetas[j] 
-                            - (alpha * gdVal + self.regVal(lam, self.thetas[j]))) 
-                
-            self.thetas = tmp 
+                tmp.append(self.thetas[j]
+                           - (alpha * gdVal + self.regVal(lam, self.thetas[j])))
+
+            self.thetas = tmp
 
             e = self.costFunc()
-            count += 1 
-            if abs(J-e) <= limit: # ???
+            count += 1
+            if abs(J-e) <= limit:  # ???
                 print('Converged, iterations: ', count, '!!!')
                 converged = True
 
@@ -90,16 +90,14 @@ ep = 0.5                # norm of the gradient
 maxIter = 10000         # limitation of iteration
 lam = 0.0               # regularization coefficient
 
-lg;                     # object of linear regression
-w = [];                 # parameters of the hypothesis function
-
 
 """open csv"""
 print("\n ------------ ImportDaTa ------------")
-dataSet = hp.importCsv("./Document/PA1_train.csv") # return [x, y]
+dataSet = hp.importCsv("./Document/PA1_train.csv")
+testSet = hp.importCsv("./Document/PA1_dev.csv")
+
 
 print("\n ------------ LinearRegression ------------")
-#print ("data: ", dataSet[0], dataSet[1]) # for testing
 lg = LinearRegression(dataSet[0], dataSet[1])
 w = lg.gradientDescent(alphaVal, ep, maxIter, lam)
 print(w)
