@@ -32,9 +32,9 @@ class LinearRegression:
 
             J += ((1.0/(2.0*self.dataNum))*(tmp - self.y[i])**2)
         return J
- 
 
     # idx : for specific X value
+
     def wgtVals(self, idx):
         rt = 0
         # Sum up all the values
@@ -51,44 +51,27 @@ class LinearRegression:
         return (lam/self.dataNum) * theta
 
     # Gradient Descent
-    def gradientDescent(self, alpha=10**-1, limit=0.001, maxIter=1000, lam=0.0):
+    def gradientDescent(self, alpha=10**-1, limit=0.5, maxIter=1000, lam=0.0):
 
-        tt, converged, count = True, False, 0
+        converged, count = False, 0
         self.thetas = self.initTheta(self.ftNum)
-
-        J = self.costFunc()
 
         while not converged:
 
-            tt, idx, tmp = True, 0, []
+            isAllCon, idx, tmp = True, 0, []
             for j in range(0, self.ftNum):
                 gdVal = self.wgtVals(j) * (1.0/self.dataNum)
-
-                # if the dJ(theta) < limit than mean converge
-                # setting tt := True
-                if gdVal > limit:
-                    tt = False
 
                 tmp.append(self.thetas[j]
                            - (alpha * gdVal + self.regVal(lam, self.thetas[j])))
 
-            # if converged than return (JERRY)
-            if tt == True:
-                print('JERRY Converged, iterations: ', count, '!!!')
-                return self.thetas
+                isAllCon = False if gdVal > limit else isAllCon
 
-            self.thetas = tmp
-
-            e = self.costFunc()
             count += 1
-            # if abs(J-e) <= limit:
-            #     print('Converged, iterations: ', count, '!!!')
-            #     converged = True
+            converged = True if count == maxIter else isAllCon
+            self.thetas = tmp if converged == False else self.thetas
 
-            J = e
-            if count == maxIter:
-                print('Max interactions exceeded!')
-                converged = True
+        print('Converged, iterations: ', count, '!!!')
 
         return self.thetas
 
@@ -97,9 +80,9 @@ class LinearRegression:
 # ################ Main Function ################
 # =============================================================================
 alphaVal = 10 ** (-1)   # learning rate
-limit = 0.0000001           # convergence condition
+limit = 0.0000001       # convergence condition
 ep = 0.5                # norm of the gradient
-maxIter = 1000         # limitation of iteration
+maxIter = 1000          # limitation of iteration
 lam = 0.0               # regularization coefficient
 
 
