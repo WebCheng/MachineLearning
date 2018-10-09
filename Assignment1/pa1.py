@@ -63,7 +63,7 @@ class LinearRegression:
                 gdVal = self.wgtVals(j) * (1.0/self.dataNum)
 
                 tmp.append(self.thetas[j]
-                           - (alpha * gdVal - self.regVal(lam, self.thetas[j])))
+                           - (alpha * gdVal + self.regVal(lam, self.thetas[j])))
 
                 isAllCon = False if abs(gdVal) > limit else isAllCon
 
