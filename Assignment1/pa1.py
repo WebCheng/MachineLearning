@@ -65,7 +65,7 @@ class LinearRegression:
                 tmp.append(self.thetas[j]
                            - (alpha * gdVal + self.regVal(lam, self.thetas[j])))
 
-                isAllCon = False if gdVal > limit else isAllCon
+                isAllCon = False if abs(gdVal) > limit else isAllCon
 
             count += 1
             converged = True if count == maxIter else isAllCon
