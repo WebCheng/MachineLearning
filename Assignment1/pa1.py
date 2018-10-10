@@ -4,7 +4,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import helper as hp
-
+from datetime import date
 
 # Linear Regression class
 class LinearRegression:
@@ -12,7 +12,7 @@ class LinearRegression:
         self.x = datas              # training examples
         self.y = result             # outcome price
         self.dataNum = len(datas)   # number of data
-        self.ftNum = len(self.x[0])  # number of Xi(feature)
+        self.ftNum = len(self.x[0]) # number of Xi(feature)
         self.thetas = []            # array of parameters
 
     # Initilize parameters
@@ -34,7 +34,6 @@ class LinearRegression:
         return J
 
     # idx : for specific X value
-
     def wgtVals(self, idx):
         rt = 0
         # Sum up all the values
@@ -97,8 +96,8 @@ lg = LinearRegression(dataSet[0], dataSet[1])
 w = lg.gradientDescent(alphaVal, ep, maxIter, lam)
 print(w)
 
-print "\n --------------------------------------- SEE Compute ---------------------------------------"
-print hp.sse(testSet[1], hp.predictVals(w, testSet[0]))
+print("\n --------------------------------------- SEE Compute ---------------------------------------")
+print(hp.sse(testSet[1], hp.predictVals(w, testSet[0])))
 
 """ drawing plot """
 # arr = [x[1] for x in dataSet[0]]
