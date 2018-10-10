@@ -19,7 +19,7 @@ class LinearRegression:
     def initTheta(self, nums):
         rt = []
         for i in range(0, nums):
-            rt.append(1)
+            rt.append(0)
         return rt
 
     # Cost Function
@@ -84,8 +84,7 @@ limit = 0.0000001       # convergence condition
 ep = 0.5                # norm of the gradient
 maxIter = 1000          # limitation of iteration
 lam = 0.0               # regularization coefficient
-
-
+  
 """open csv"""
 print("\n ------------ ImportDaTa ------------")
 dataSet = hp.importCsv("./Document/PA1_train.csv")
@@ -100,7 +99,7 @@ print(w)
 print "\n --------------------------------------- SEE Compute ---------------------------------------"
 print hp.sse(testSet[1], hp.predictVals(w, testSet[0]))
 
-""" drawing plot """
+# """ drawing plot """
 # arr = [x[1] for x in dataSet[0]]
 # plt.scatter(arr, dataSet[1])
 # plt.ylabel('y lable')

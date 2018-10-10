@@ -1,6 +1,6 @@
 from datetime import datetime
 import numpy as np
-
+import pandas as pd
 
 """
 Get SSE given ground truth and prediction vectors
@@ -23,6 +23,17 @@ def predictVals(thetas, datas):
         predVal = np.dot(row, thetas)
         rt = np.append(rt, predVal)
     return rt
+
+
+def NormalizeDatas(matrix):
+    df = pd.DataFrame(matrix)
+    dfNorm = (df - df.min()) / (df.max() - df.min())
+    
+    print("\n ------------ ImportDaTa static detail value------------")
+    print dfNorm.describe()
+
+    return dfNorm.values
+
 
 
 """
@@ -52,25 +63,26 @@ def importCsv(path, delimiter=",", isHead=True):
 
             y.append(float(arr.pop().replace("\n", "")))
 
-            x.append([float(arr[0]), year/1000, month/10, day/10
-                      # ,float(arr[2])
-                      # ,float(arr[3])
-                      # ,float(arr[4])
-                      # ,float(arr[5])/1000
-                      # ,float(arr[6])/1000
-                      # ,float(arr[7])
-                      # ,float(arr[8])
-                      # ,float(arr[9])
-                      # ,float(arr[10])
-                      # ,float(arr[11])
-                      # ,float(arr[12])/1000
-                      # ,float(arr[13])/1000
-                      # ,float(arr[14])/1000
-                      # ,float(arr[15])/1000
-                      # ,float(arr[16])/10000
-                      # ,float(arr[17])/10
-                      # ,float(arr[18])/(-100)
-                      # ,float(arr[19])/1000
+            x.append([float(arr[1])
+                      ,float(arr[2])
+                      ,float(arr[3])
+                      ,float(arr[4])
+                      ,float(arr[5])
+                      ,float(arr[6])
+                      ,float(arr[7])
+                      ,float(arr[8])
+                      ,float(arr[9])
+                      ,float(arr[10])
+                      ,float(arr[11])
+                      ,float(arr[12])
+                      ,float(arr[13])
+                      ,float(arr[14])
+                      ,float(arr[15])
+                      ,float(arr[16])
+                      ,float(arr[17])
+                      ,float(arr[18])
+                      ,float(arr[19])
                       ])
-
-    return [x, y]
+    
+    return [NormalizeDatas(x), y]
+    # return [x, y]
