@@ -1,8 +1,6 @@
 # date to YYYYMMDD
 #
-
-import numpy as np
-import matplotlib.pyplot as plt
+import numpy as np 
 import helper as hp
 from datetime import date
 
@@ -78,25 +76,25 @@ class LinearRegression:
 # =============================================================================
 # ################ Main Function ################
 # =============================================================================
-alphaVal = 10 ** (-1)   # learning rate
-limit = 0.0000001       # convergence condition
-ep = 0.5                # norm of the gradient
+alphaVal = 10 ** (-7)   # learning rate
+limit = 0.5             # convergence condition
 maxIter = 1000          # limitation of iteration
 lam = 0.0               # regularization coefficient
   
 """open csv"""
 print("\n ------------ ImportDaTa ------------")
 dataSet = hp.importCsv("./Document/PA1_train.csv")
-testSet = hp.importCsv("./Document/PA1_dev.csv")
+# testSet = hp.importCsv("./Document/PA1_dev.csv")
 
 
 print("\n ------------ LinearRegression ------------")
 lg = LinearRegression(dataSet[0], dataSet[1])
-w = lg.gradientDescent(alphaVal, ep, maxIter, lam)
+print date.today()
+w = lg.gradientDescent(alphaVal, limit, maxIter, lam)
 print(w)
 
-print("\n --------------------------------------- SEE Compute ---------------------------------------")
-print(hp.sse(testSet[1], hp.predictVals(w, testSet[0])))
+print("\n --------------------------------------- SSE Compute ---------------------------------------")
+print(hp.sse(dataSet[1], hp.predictVals(w, dataSet[0])))
 
 # """ drawing plot """
 # arr = [x[1] for x in dataSet[0]]

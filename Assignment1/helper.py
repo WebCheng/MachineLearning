@@ -48,6 +48,35 @@ def NormalizeDatas(matrix):
 
 
 """
+Normalize Values between 0 to 1
+Matrix -> Matrix
+"""
+
+
+def NormalizeDatasdd(matrix):
+
+    tMin, tMax, mins, maxs = 0, 0, [], []
+    for col in range(0, len(matrix)):
+        for row in range(0, len(matrix[0])):
+            tMin = row if row <
+            tMax = row
+        mins.append(tMin)
+        maxs.append(tMax)
+
+    df = pd.DataFrame(matrix)
+    dfNorm = (df - df.min()) / (df.max() - df.min())
+
+    # For the first col setting Dummy values( all datas = 1 )
+    if dfNorm.iloc[:, 0].count() == 0:
+        dfNorm.iloc[:, 0] = 1
+
+    print("\n ------------ ImportDaTa static detail value------------")
+    print dfNorm.describe()
+
+    return dfNorm.values
+
+
+"""
 Import data from CSV files
 """
 
@@ -74,31 +103,31 @@ def importCsv(path, delimiter=",", isHead=True):
             day = float(arr[2]-year*10000-month*100)
 #            print("Y/M/D: ", year, month, day) # for testing
 
-            diff_day = (year_c*365 + month_c*30 + day_c) - \
-                (year*365 + month*30 + day)
+            diff_day = (2018*365 + 5*30 + 31) - (year*365 + month*30 + day)
 
-            # ??? need to normalize other input
             y.append(float(arr.pop().replace("\n", "")))
             x.append([float(arr[0]),
-                      diff_day
-                      # ,float(arr[3])
-                      # ,float(arr[4])
-                      # ,float(arr[5])/1000
-                      # ,float(arr[6])/1000
-                      # ,float(arr[7])
-                      # ,float(arr[8])
-                      # ,float(arr[9])
-                      # ,float(arr[10])
-                      # ,float(arr[11])
-                      # ,float(arr[12])/1000
-                      # ,float(arr[13])/1000
-                      # ,float(arr[14])/1000
-                      # ,float(arr[15])/1000
-                      # ,float(arr[16])/10000
-                      # ,float(arr[17])/10
-                      # ,float(arr[18])/(-100)
-                      # ,float(arr[19])/1000
-                      # ,float(arr[20])/1000
+                    #   ,float(arr[1])
+                    #   ,float(arr[2])
+                      ,diff_day
+                      ,float(arr[3])
+                      ,float(arr[4])
+                      ,float(arr[5])
+                      ,float(arr[6])
+                      ,float(arr[7])
+                      ,float(arr[8])
+                      ,float(arr[9])
+                      ,float(arr[10])
+                      ,float(arr[11])
+                      ,float(arr[12])
+                      ,float(arr[13])
+                      ,float(arr[14])
+                      ,float(arr[15])
+                      ,float(arr[16])
+                      ,float(arr[17])
+                      ,float(arr[18])
+                      ,float(arr[19])
+                      ,float(arr[20])
                       ])
 
     return [NormalizeDatas(x), y]
