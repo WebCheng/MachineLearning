@@ -89,7 +89,6 @@ dataSet = hp.importCsv("./Document/PA1_train.csv")
 
 print("\n ------------ LinearRegression ------------")
 lg = LinearRegression(dataSet[0], dataSet[1])
-print date.today()
 w = lg.gradientDescent(alphaVal, limit, maxIter, lam)
 print(w)
 

@@ -106,7 +106,7 @@ def importCsv(path, delimiter=",", isHead=True):
             diff_day = (2018*365 + 5*30 + 31) - (year*365 + month*30 + day)
 
             y.append(float(arr.pop().replace("\n", "")))
-            x.append([float(arr[0]),
+            x.append([float(arr[0])
                     #   ,float(arr[1])
                     #   ,float(arr[2])
                       ,diff_day
