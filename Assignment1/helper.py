@@ -1,6 +1,9 @@
 from datetime import datetime
+from datetime import date
 import numpy as np
 import pandas as pd
+import math
+
 
 """
 Get SSE given ground truth and prediction vectors
@@ -28,7 +31,11 @@ def predictVals(thetas, datas):
 def NormalizeDatas(matrix):
     df = pd.DataFrame(matrix)
     dfNorm = (df - df.min()) / (df.max() - df.min())
-    
+
+    # For the first col setting Dummy values( all datas = 1 )
+    if dfNorm.iloc[:,0].count() == 0:
+        dfNorm.iloc[:,0] = 1
+
     print("\n ------------ ImportDaTa static detail value------------")
     print dfNorm.describe()
 
@@ -40,7 +47,12 @@ def NormalizeDatas(matrix):
 Import data from CSV files
 """
 
-
+today = date.today()
+#print("Today is :", today.day, today.month, today.year)
+year_c = today.year
+month_c = today.month
+day_c = today.day
+diff_day = 0
 def importCsv(path, delimiter=",", isHead=True):
     x, y = [], []
 
@@ -57,31 +69,35 @@ def importCsv(path, delimiter=",", isHead=True):
 
             arr[2] = float(datetime.strptime(
                 arr[2], '%m/%d/%Y').strftime("%Y%m%d"))
-            year = float(arr[2]/10000)
-            month = float(arr[2]/100 % 100)
-            day = float(arr[2] % 100)
 
-            y.append(float(arr.pop().replace("\n", "")))
-
-            x.append([float(arr[1])
-                      ,float(arr[2])
-                      ,float(arr[3])
-                      ,float(arr[4])
-                      ,float(arr[5])
-                      ,float(arr[6])
-                      ,float(arr[7])
-                      ,float(arr[8])
-                      ,float(arr[9])
-                      ,float(arr[10])
-                      ,float(arr[11])
-                      ,float(arr[12])
-                      ,float(arr[13])
-                      ,float(arr[14])
-                      ,float(arr[15])
-                      ,float(arr[16])
-                      ,float(arr[17])
-                      ,float(arr[18])
-                      ,float(arr[19])
+            year = float(math.floor(arr[2]/10000))
+            month = float(math.floor((arr[2]-year*10000) / 100))
+            day = float(arr[2]-year*10000-month*100)
+#            print("Y/M/D: ", year, month, day) # for testing
+            
+            diff_day = (year_c*365 + month_c*30 + day_c)- (year*365 + month*30 + day)
+            
+            # ??? need to normalize other input
+            y.append(float(arr.pop().replace("\n", "")))       
+            x.append([float(arr[0]), 
+                      diff_day 
+                      # ,float(arr[3])
+                      # ,float(arr[4])
+                      # ,float(arr[5])/1000
+                      # ,float(arr[6])/1000
+                      # ,float(arr[7])
+                      # ,float(arr[8])
+                      # ,float(arr[9])
+                      # ,float(arr[10])
+                      # ,float(arr[11])
+                      # ,float(arr[12])/1000
+                      # ,float(arr[13])/1000
+                      # ,float(arr[14])/1000
+                      # ,float(arr[15])/1000
+                      # ,float(arr[16])/10000
+                      # ,float(arr[17])/10
+                      # ,float(arr[18])/(-100)
+                      # ,float(arr[19])/1000
                       ])
     
     return [NormalizeDatas(x), y]
