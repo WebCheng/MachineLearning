@@ -42,7 +42,7 @@ def NormalizeDatas(matrix):
         dfNorm.iloc[:, 0] = 1
 
     print("\n ------------ ImportDaTa static detail value------------")
-    print dfNorm.describe()
+    print (dfNorm.describe())
 
     return dfNorm.values
 
@@ -53,27 +53,27 @@ Matrix -> Matrix
 """
 
 
-def NormalizeDatasdd(matrix):
+# def NormalizeDatasdd(matrix):
 
-    tMin, tMax, mins, maxs = 0, 0, [], []
-    for col in range(0, len(matrix)):
-        for row in range(0, len(matrix[0])):
-            tMin = row if row <
-            tMax = row
-        mins.append(tMin)
-        maxs.append(tMax)
+#     tMin, tMax, mins, maxs = 0, 0, [], []
+#     for col in range(0, len(matrix)):
+#         for row in range(0, len(matrix[0])):
+#             tMin = row if row <
+#             tMax = row
+#         mins.append(tMin)
+#         maxs.append(tMax)
 
-    df = pd.DataFrame(matrix)
-    dfNorm = (df - df.min()) / (df.max() - df.min())
+#     df = pd.DataFrame(matrix)
+#     dfNorm = (df - df.min()) / (df.max() - df.min())
 
-    # For the first col setting Dummy values( all datas = 1 )
-    if dfNorm.iloc[:, 0].count() == 0:
-        dfNorm.iloc[:, 0] = 1
+#     # For the first col setting Dummy values( all datas = 1 )
+#     if dfNorm.iloc[:, 0].count() == 0:
+#         dfNorm.iloc[:, 0] = 1
 
-    print("\n ------------ ImportDaTa static detail value------------")
-    print dfNorm.describe()
+#     print("\n ------------ ImportDaTa static detail value------------")
+#     print dfNorm.describe()
 
-    return dfNorm.values
+#     return dfNorm.values
 
 
 """
