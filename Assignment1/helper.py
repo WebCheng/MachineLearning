@@ -98,6 +98,7 @@ def importCsv(path, delimiter=",", isHead=True):
                       # ,float(arr[17])/10
                       # ,float(arr[18])/(-100)
                       # ,float(arr[19])/1000
+                      # ,float(arr[20])/1000
                       ])
     
     return [NormalizeDatas(x), y]
