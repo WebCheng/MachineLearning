@@ -98,4 +98,4 @@ def importCsv(path, delimiter=",", isHead=True):
                         ,float(arr[20])
                       ])
     
-    return [NormalizeDatas(x), y]
+    return [NormalizeData(x), y]
