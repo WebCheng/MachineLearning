@@ -83,9 +83,9 @@ class LinearRegression:
             count += 1
             # SSEVal is explode than or Count value eqaul to max iteration value
             # than return values
-            if count == maxIter or sseVal == float('Inf') or sseVal == float('NaN'):
-                print(la.norm(gdVal))
-                print(count, (hp.sse(self.y, hp.predictVals(self.thetas, self.x))))
+            if count == maxIter or sseVal == float('Inf') or sseVal == float('NaN'): 
+                print("Iteration : " + str( count))
+                print("Final SSE Value : " + str(hp.sse(self.y, hp.predictVals(self.thetas, self.x))))
                 converged = True
 
         self.fileClose(isValidate)
@@ -98,10 +98,15 @@ class LinearRegression:
 alphaVal = 10 ** (-5)               # learning rate
 limit = 0.5                         # convergence condition
 maxIter = 10000                     # limitation of iteration
-lam = 0                             # regularization coefficient
-outPutFile = "pa1_result_"        # Out put file name
+lam = 0.0                           # regularization coefficient
+outPutFile = "pa1_result_"          # Out put file name
 isValidate = True                   # is Out put validation result
 isNormalize = True                  # is Normalize input date
+
+print("Learning Rate:"+str(alphaVal))
+print("Convergence condition(norm): "+str(limit))
+print("Limitation of iteration: "+str(maxIter))
+print("Regularization coefficient: "+str(lam)) 
 
 """open csv"""
 print("\n ------------ ImportDaTa ------------")
@@ -113,5 +118,5 @@ print("\n ------------ LinearRegression ------------")
 x1, y1 = np.matrix(dataSet[0]), np.matrix(dataSet[1]).T
 x2, y2 = np.matrix(testSet[0]), np.matrix(testSet[1]).T
 lg = LinearRegression(x1, y1, x2, y2, outPutFile+str(alphaVal)+"--")
-w = lg.gradientDescent(alphaVal, limit, maxIter, lam, isValidate)
+w = lg.gradientDescent(alphaVal, float(limit), maxIter, float(lam), isValidate)
 print(w)
