@@ -83,11 +83,11 @@ class LinearRegression:
             count += 1
             # SSEVal is explode than or Count value eqaul to max iteration value
             # than return values
-            if count == maxIter or sseVal == float('Inf') or sseVal == float('NaN'): 
-                print("Iteration : " + str( count))
-                print("Final SSE Value : " + str(hp.sse(self.y, hp.predictVals(self.thetas, self.x))))
-                converged = True
+            if count == maxIter or sseVal == float('Inf') or sseVal == float('NaN'):  
+                break
 
+        print("Iteration : " + str( count))
+        print("Final SSE Value : " + str(hp.sse(self.y, hp.predictVals(self.thetas, self.x))))
         self.fileClose(isValidate)
         return self.thetas
 
