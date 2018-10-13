@@ -73,7 +73,7 @@ def importCsv(path, isNormalize, delimiter=",", isHead=True):
 
             # Setting our dataset
             y.append(float(arr.pop().replace("\n", "")))
-            x.append([float(arr[0])  # Dummy
+            x.append([float(arr[0])     # Dummy
                       # , float(arr[1]) # ID
                       # , float(arr[2]) # date
                       , diff_day        # modified date

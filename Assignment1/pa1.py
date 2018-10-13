@@ -66,6 +66,10 @@ class LinearRegression:
 
             # Compute Weight Value
             gdVal = self.wgtVals()
+            # Compute Regulization Values exclude bias values
+            regVal = lam*self.thetas
+            regVal[0][0] = 0
+            gdVal = gdVal + regVal
             # Compute norm value of weight value
             normVal = la.norm(gdVal)
 
@@ -75,11 +79,7 @@ class LinearRegression:
                 break
 
             # Compute Regulization Values exclude bias values
-            regVal = lam*self.thetas
-            regVal[0][0] = 0
-
-            # Compute Regulization Values exclude bias values
-            self.thetas = self.thetas - (alpha * (gdVal + regVal))
+            self.thetas = self.thetas - (alpha * (gdVal))
 
             count += 1
             # SSEVal is explode than or Count value eqaul to max iteration value
@@ -99,7 +99,7 @@ class LinearRegression:
 # =============================================================================
 alphaVal = 10 ** (-5)               # learning rate
 limit = 0.5                         # convergence condition
-maxIter = 10000                     # limitation of iteration
+maxIter = 300000                     # limitation of iteration
 lam = 0.0                           # regularization coefficient
 outPutFile = "pa1_result_"          # Out put file name
 isValidate = True                   # is Out put validation result
@@ -118,9 +118,21 @@ dataSet = hp.importCsv(trainingFile, isNormalize)
 testSet = hp.importCsv(ValidateFile, isNormalize)
 
 
+# print("\n ------------ LinearRegression ------------")
+# x1, y1 = np.matrix(dataSet[0]), np.matrix(dataSet[1]).T
+# x2, y2 = np.matrix(testSet[0]), np.matrix(testSet[1]).T
+# lg = LinearRegression(x1, y1, x2, y2, outPutFile+str(alphaVal)+"--")
+# w = lg.gradientDescent(alphaVal, float(limit), maxIter, float(lam), isValidate)
+# print("Weight Value:")
+# print(w)
+
+
+lamdas = [ 10**(0), 10**(1), 10**(2)]
 print("\n ------------ LinearRegression ------------")
-x1, y1 = np.matrix(dataSet[0]), np.matrix(dataSet[1]).T
-x2, y2 = np.matrix(testSet[0]), np.matrix(testSet[1]).T
-lg = LinearRegression(x1, y1, x2, y2, outPutFile+str(alphaVal)+"--")
-w = lg.gradientDescent(alphaVal, float(limit), maxIter, float(lam), isValidate)
-print(w)
+for val in lamdas:
+    x1, y1 = np.matrix(dataSet[0]), np.matrix(dataSet[1]).T
+    x2, y2 = np.matrix(testSet[0]), np.matrix(testSet[1]).T
+    lg = LinearRegression(x1, y1, x2, y2, outPutFile+str(val)+"--")
+    w = lg.gradientDescent(alphaVal, float(limit), maxIter, float(val), isValidate)
+    print("Weight Value:")
+    print(w)
