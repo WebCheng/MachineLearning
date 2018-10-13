@@ -118,21 +118,11 @@ dataSet = hp.importCsv(trainingFile, isNormalize)
 testSet = hp.importCsv(ValidateFile, isNormalize)
 
 
-# print("\n ------------ LinearRegression ------------")
-# x1, y1 = np.matrix(dataSet[0]), np.matrix(dataSet[1]).T
-# x2, y2 = np.matrix(testSet[0]), np.matrix(testSet[1]).T
-# lg = LinearRegression(x1, y1, x2, y2, outPutFile+str(alphaVal)+"--")
-# w = lg.gradientDescent(alphaVal, float(limit), maxIter, float(lam), isValidate)
-# print("Weight Value:")
-# print(w)
-
-
-lamdas = [ 10**(0), 10**(1), 10**(2)]
 print("\n ------------ LinearRegression ------------")
-for val in lamdas:
-    x1, y1 = np.matrix(dataSet[0]), np.matrix(dataSet[1]).T
-    x2, y2 = np.matrix(testSet[0]), np.matrix(testSet[1]).T
-    lg = LinearRegression(x1, y1, x2, y2, outPutFile+str(val)+"--")
-    w = lg.gradientDescent(alphaVal, float(limit), maxIter, float(val), isValidate)
-    print("Weight Value:")
-    print(w)
+x1, y1 = np.matrix(dataSet[0]), np.matrix(dataSet[1]).T
+x2, y2 = np.matrix(testSet[0]), np.matrix(testSet[1]).T
+lg = LinearRegression(x1, y1, x2, y2, outPutFile+str(alphaVal)+"--")
+w = lg.gradientDescent(alphaVal, float(limit), maxIter, float(lam), isValidate)
+print("Weight Value:")
+print(w)
+ 
