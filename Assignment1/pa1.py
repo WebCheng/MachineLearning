@@ -11,15 +11,16 @@ class LinearRegression:
 
     # Intial global values
     def __init__(self, datas, result, validateDatas, validateResult, fileName):
-        self.x = datas                                                  # training examples
-        self.y = result                                                 # outcome price
-        self.dataNum = len(datas)                                       # number of data 
-        self.thetas = []                                                # array of parameters
-        self.vx = validateDatas                                         # Validate Data
-        self.vy = validateResult                                        # Validate Result
-        self.fileName = fileName+strftime("%Y%m%d%H%M%S", gmtime())     # Out files name
-        self.file1 = None                                               # File for training data
-        self.file2 = None                                               # File for validate data
+        self.x = datas                              # training examples
+        self.y = result                             # outcome price
+        self.dataNum = len(datas)                   # number of data
+        self.thetas = []                            # array of parameters
+        self.vx = validateDatas                     # Validate Data
+        self.vy = validateResult                    # Validate Result
+        self.fileName = fileName + \
+            strftime("%Y%m%d%H%M%S", gmtime())      # Out files name
+        self.file1 = None                           # File for training data
+        self.file2 = None                           # File for validate data
 
     # Compute the value by using matrix only
     # it is more quickly than using for loop
@@ -76,18 +77,19 @@ class LinearRegression:
             # Compute Regulization Values exclude bias values
             regVal = lam*self.thetas
             regVal[0][0] = 0
-            
+
             # Compute Regulization Values exclude bias values
             self.thetas = self.thetas - (alpha * (gdVal + regVal))
 
             count += 1
             # SSEVal is explode than or Count value eqaul to max iteration value
             # than return values
-            if count == maxIter or sseVal == float('Inf') or sseVal == float('NaN'):  
+            if count == maxIter or sseVal == float('Inf') or sseVal == float('NaN'):
                 break
 
-        print("Iteration : " + str( count))
-        print("Final SSE Value : " + str(hp.sse(self.y, hp.predictVals(self.thetas, self.x))))
+        print("Iteration : " + str(count))
+        print("Final SSE Value : " +
+              str(hp.sse(self.y, hp.predictVals(self.thetas, self.x))))
         self.fileClose(isValidate)
         return self.thetas
 
@@ -102,16 +104,18 @@ lam = 0.0                           # regularization coefficient
 outPutFile = "pa1_result_"          # Out put file name
 isValidate = True                   # is Out put validation result
 isNormalize = True                  # is Normalize input date
+trainingFile = "PA1_train.csv"      # Training file name
+ValidateFile = "PA1_dev.csv"        # Validate file name
 
 print("Learning Rate:"+str(alphaVal))
 print("Convergence condition(norm): "+str(limit))
 print("Limitation of iteration: "+str(maxIter))
-print("Regularization coefficient: "+str(lam)) 
+print("Regularization coefficient: "+str(lam))
 
-"""open csv"""
+
 print("\n ------------ ImportDaTa ------------")
-dataSet = hp.importCsv("PA1_train.csv", isNormalize)
-testSet = hp.importCsv("PA1_dev.csv", isNormalize)
+dataSet = hp.importCsv(trainingFile, isNormalize)
+testSet = hp.importCsv(ValidateFile, isNormalize)
 
 
 print("\n ------------ LinearRegression ------------")

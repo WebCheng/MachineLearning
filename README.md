@@ -1,9 +1,14 @@
 # MachineLearning
 Using python3.7.0
-libs numpy, pandas, math, datetime  
+
+## 1. Assignment1
+Using Batch Gradient descent to analize data set - House Sale in King County
 
 
-### 1. Miniconda setting for running Assignment1
+
+
+## Environment Setting
+### 1. Miniconda setting for 
 #### Download mini conda
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 #### Execute Andaconda
@@ -19,5 +24,5 @@ which python
 python -m pip install numpy
 python -m pip install pandas
 #### Python from conda env
-python pa1.py
+python name.py
 
