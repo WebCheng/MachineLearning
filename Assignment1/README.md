@@ -5,8 +5,8 @@ Python version using - python3.7
 get in Bash
 3.  source myenv3.5/bin/activate
 source python env
-4.  cd {path}\pa1.py
-cd to pa1.py 
+4.  cd {path}/ 
+cd path to the place of pa1.py 
 5.  vim pa1.py
 Setting the input value
 alphaVal = 10 ** (-5)               # learning rate
