@@ -1,122 +1,117 @@
-# date to YYYYMMDD
-#
 import numpy as np
 import helper as hp
 from datetime import date
 from numpy import linalg as la
+import time
+from time import gmtime, strftime
+
 
 # Linear Regression class
-
-
 class LinearRegression:
-    def __init__(self, datas, result, validateDatas=None, validateResult=None):
-        self.x = datas              # training examples
-        self.y = result             # outcome price
-        self.dataNum = len(datas)   # number of data
-        self.ftNum = len(self.x[0])  # number of Xi(feature)
-        self.thetas = []            # array of parameters
-        self.vx = validateDatas
-        self.vy = validateResult
 
-    # Initilize parameters
-    def initTheta(self, nums):
-        rt = []
-        for i in range(0, nums):
-            rt.append(0)
-        return rt
+    # Intial global values
+    def __init__(self, datas, result, validateDatas, validateResult, fileName):
+        self.x = datas                                                  # training examples
+        self.y = result                                                 # outcome price
+        self.dataNum = len(datas)                                       # number of data 
+        self.thetas = []                                                # array of parameters
+        self.vx = validateDatas                                         # Validate Data
+        self.vy = validateResult                                        # Validate Result
+        self.fileName = fileName+strftime("%Y%m%d%H%M%S", gmtime())     # Out files name
+        self.file1 = None                                               # File for training data
+        self.file2 = None                                               # File for validate data
 
-    # Cost Function
-    def costFunc(self):
-        J = 0
-        for i in range(0, self.dataNum):
-            tmp = 0.0
-            for j in range(0, self.ftNum):
-                tmp = tmp + self.thetas[j] * self.x[i][j]
+    # Compute the value by using matrix only
+    # it is more quickly than using for loop
+    def wgtVals(self):
+        hVal = np.dot(self.x, self.thetas)
+        return np.dot(self.x.T, (hVal - self.y))
 
-            J += ((1.0/(2.0*self.dataNum))*(tmp - self.y[i])**2)
-        return J
+    def OutPutSEEResult(self, isValidate, normVal):
+        sseVal1 = (hp.sse(self.y, hp.predictVals(self.thetas, self.x)))
+        self.file1.write(str(sseVal1)+","+str(normVal))
+        self.file1.write("\n")
 
-    # idx : for specific X value
-    def wgtVals(self, idx):
-        rt = 0
-        # Sum up all the values
-        for i in range(0, self.dataNum):
-            # compute (X^T*theta)
-            tmp = 0
-            for j in range(0, self.ftNum):
-                tmp = tmp + self.thetas[j] * (self.x[i][j])
-            rt += (tmp - self.y[i]) * self.x[i][idx]
-        return rt
+        if isValidate:
+            sseVal2 = (hp.sse(self.vy, hp.predictVals(self.thetas, self.vx)))
+            self.file2.write(str(sseVal2))
+            self.file2.write("\n")
+        return sseVal1
 
-    # Regulization
-    def regVal(self, lam, theta):
-        return (lam/self.dataNum) * theta
+    # Using csv files to plot data
+    def fileOpen(self, isValidate):
+        self.file1 = open(self.fileName+"-train.csv", "a+")
+        if isValidate:
+            self.file2 = open(self.fileName+"-validate.csv", "a+")
 
-    # Gradient Descent
-    def gradientDescent(self, alpha=10**-1, limit=0.5, maxIter=1000, lam=0.0, isPart3=False):
+    # Using csv files to plot data
+    def fileClose(self, isValidate):
+        self.file1.close()
+        if isValidate:
+            self.file2.close()
 
-        converged, count = False, 0
-        self.thetas = self.initTheta(self.ftNum)
+    # learning rate                 => alpha=10**-1
+    # Converge condition            => limit=0.5
+    # Iteration number              => maxIter=1000
+    # Regulization value            => lam=0.0
+    # is Out put Validate sse file  => isValidate=False
+    def gradientDescent(self, alpha=10**-1, limit=0.5, maxIter=1000, lam=0.0, isValidate=False):
+        converged, count = False, 1
 
-        thetasPart3 = []
-        thetasPart3.append(self.thetas)
-
+        # Initail point of weights values
+        self.thetas = np.zeros((self.x.T.shape[0], 1))
+        self.fileOpen(isValidate)
         while not converged:
 
-            idx, tmp, normArr = 0, [], []
-            for j in range(0, self.ftNum):
-                gdVal = self.wgtVals(j) * (1.0/self.dataNum)
+            # Compute Weight Value
+            gdVal = self.wgtVals()
+            # Compute norm value of weight value
+            normVal = la.norm(gdVal)
 
-                regVal = 0
-                if j != 0:
-                    regVal = self.regVal(lam, self.thetas[j])
+            sseVal = self.OutPutSEEResult(isValidate, normVal)
 
-                tmp.append(self.thetas[j] - (alpha * (gdVal + regVal)))
+            if normVal < limit:
+                break
 
-                normArr.append(gdVal)
+            # Compute Regulization Values exclude bias values
+            regVal = lam*self.thetas
+            regVal[0][0] = 0
+            
+            # Compute Regulization Values exclude bias values
+            self.thetas = self.thetas - (alpha * (gdVal + regVal))
 
             count += 1
-            converged = True if count == maxIter else la.norm(normArr) < 0.5
-            
-            self.thetas = tmp if converged == False else self.thetas
-            thetasPart3.append(self.thetas)
+            # SSEVal is explode than or Count value eqaul to max iteration value
+            # than return values
+            if count == maxIter or sseVal == float('Inf') or sseVal == float('NaN'):
+                print(la.norm(gdVal))
+                print(count, (hp.sse(self.y, hp.predictVals(self.thetas, self.x))))
+                converged = True
 
-            print(count, (hp.sse(self.y, hp.predictVals(self.thetas, self.x))))
-
-        print('Converged, iterations: ', count, '!!!')
-        if isPart3:
-            for i in range(0,count):
-                print(i, (hp.sse(self.vy, hp.predictVals(thetasPart3[i], self.vx))))
-
+        self.fileClose(isValidate)
         return self.thetas
 
 
 # =============================================================================
 # ################ Main Function ################
 # =============================================================================
-alphaVal = 10 ** (-1)   # learning rate
-limit = 0.5             # convergence condition
-maxIter = 100000           # limitation of iteration
-lam = 0.1               # regularization coefficient
+alphaVal = 10 ** (-5)               # learning rate
+limit = 0.5                         # convergence condition
+maxIter = 10000                     # limitation of iteration
+lam = 0                             # regularization coefficient
+outPutFile = "pa1_result_"        # Out put file name
+isValidate = True                   # is Out put validation result
+isNormalize = True                  # is Normalize input date
 
 """open csv"""
 print("\n ------------ ImportDaTa ------------")
-dataSet = hp.importCsv("./Document/PA1_train.csv")
-testSet = hp.importCsv("./Document/PA1_dev.csv")
+dataSet = hp.importCsv("PA1_train.csv", isNormalize)
+testSet = hp.importCsv("PA1_dev.csv", isNormalize)
 
 
 print("\n ------------ LinearRegression ------------")
-lg = LinearRegression(dataSet[0], dataSet[1])
-w = lg.gradientDescent(alphaVal, limit, maxIter, lam)
+x1, y1 = np.matrix(dataSet[0]), np.matrix(dataSet[1]).T
+x2, y2 = np.matrix(testSet[0]), np.matrix(testSet[1]).T
+lg = LinearRegression(x1, y1, x2, y2, outPutFile+str(alphaVal)+"--")
+w = lg.gradientDescent(alphaVal, limit, maxIter, lam, isValidate)
 print(w)
-
-print("\n --------------------------------------- SSE Compute ---------------------------------------")
-print(hp.sse(dataSet[1], hp.predictVals(w, dataSet[0])))
-print(hp.sse(testSet[1], hp.predictVals(w, testSet[0])))
-
-# """ drawing plot """
-# arr = [x[1] for x in dataSet[0]]
-# plt.scatter(arr, dataSet[1])
-# plt.ylabel('y lable')
-# plt.xlabel('x lable')
-# plt.show()

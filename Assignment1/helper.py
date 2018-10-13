@@ -9,7 +9,7 @@ Get SSE given ground truth and prediction vectors
 
 
 def sse(realVal, predVal):
-    return sum((realVal-predVal)**2)/2.0
+    return np.sum(np.power((realVal-predVal), 2.0)) / 2.0
 
 
 """
@@ -19,11 +19,8 @@ and returns prediction vector.
 
 
 def predictVals(thetas, datas):
-    rt = np.array([])
-    for row in datas:
-        predVal = np.dot(row, thetas)
-        rt = np.append(rt, predVal)
-    return rt
+    return np.dot(datas, thetas)
+
 
 """
 Normalize Values between 0 to 1
@@ -40,7 +37,6 @@ def NormalizeData(matrix):
         for row in range(0, len(matrix)):
             matrix[row][col] = (matrix[row][col] - mins[col]
                                 ) / (maxs[col] - mins[col])
-
     return matrix
 
 
@@ -49,7 +45,7 @@ Import data from CSV files
 """
 
 
-def importCsv(path, delimiter=",", isHead=True):
+def importCsv(path, isNormalize, delimiter=",", isHead=True):
     x, y = [], []
 
     with open(path) as f:
@@ -60,42 +56,48 @@ def importCsv(path, delimiter=",", isHead=True):
             if isHead:
                 isHead = False
                 continue
-
             arr = line.split(delimiter)
 
-            arr[2] = float(datetime.strptime(
-                arr[2], '%m/%d/%Y').strftime("%Y%m%d"))
+            # Remove data - bedroom = 33, price 6.4
+            if float(arr[3]) >= 30.0:
+                continue
 
+            # Modified our datetime value
+            arr[2] = float(datetime.strptime(
+                arr[2], '%m/%d/%Y').strftime("%Y%m%d")) 
             year = float(math.floor(arr[2]/10000))
             month = float(math.floor((arr[2]-year*10000) / 100))
-            day = float(arr[2]-year*10000-month*100)
-#            print("Y/M/D: ", year, month, day) # for testing
-
+            day = float(arr[2]-year*10000-month*100)  
             diff_day = (2018*365 + 5*30 + 31) - (year*365 + month*30 + day)
 
+
+            # Setting our dataset
             y.append(float(arr.pop().replace("\n", "")))
-            x.append([float(arr[0])  
-                    #   ,float(arr[1])
-                      #   ,float(arr[2])
-                        ,diff_day
-                        ,float(arr[3])
-                        ,float(arr[4])
-                        ,float(arr[5])
-                        ,float(arr[6])
-                        ,float(arr[7])
-                        ,float(arr[8])
-                        ,float(arr[9])
-                        ,float(arr[10])
-                        ,float(arr[11])
-                        ,float(arr[12])
-                        ,float(arr[13])
-                        ,float(arr[14])
-                        ,float(arr[15])
-                        ,float(arr[16])
-                        ,float(arr[17])
-                        ,float(arr[18])
-                        ,float(arr[19])
-                        ,float(arr[20])
+            x.append([float(arr[0])  # Dummy
+                      # , float(arr[1]) # ID
+                      # , float(arr[2]) # date
+                      , diff_day        # modified date
+                      , float(arr[3])   # bedrooms
+                      , float(arr[4])   # bathrooms
+                      , float(arr[5])   # sqft_living
+                      , float(arr[6])   # sqft_lot
+                      , float(arr[7])   # floors
+                      , float(arr[8])   # waterfront
+                      , float(arr[9])   # view
+                      , float(arr[10])  # condition
+                      , float(arr[11])  # grade
+                      , float(arr[12])  # sqft_above
+                      , float(arr[13])  # sqft_basement
+                      , float(arr[14])  # yr_built
+                      , float(arr[15])  # yr_renovated
+                      , float(arr[16])  # zipcode zip
+                      , float(arr[17])  # lat
+                      , float(arr[18])  # long
+                      , float(arr[19])  # sqft_living15
+                      , float(arr[20])  # sqft_lot15
                       ])
-    
-    return [NormalizeData(x), y]
+
+    if isNormalize:
+        return [NormalizeData(x), y]
+    else:
+        return [x,y]
