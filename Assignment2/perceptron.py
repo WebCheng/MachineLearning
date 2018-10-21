@@ -49,7 +49,7 @@ class Perceptron:
 
             val1 = self.compAcc(self.x1, self.y1, avgWeight)
             val2 = self.compAcc(self.x2, self.y2, avgWeight)
-            print((val1, val2))
+            print(val1, val2)
 
         if count > 0:
             avgWeight = self.compAvgWgt(

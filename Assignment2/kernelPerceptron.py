@@ -14,14 +14,14 @@ class KernelPerceptron(object):
         self.x2 = parameters2
         self.y2 = result2
 
-    def kernelPerceptron(self, maxIter=1):
+    def kernelPerceptron(self, maxIter=1, powNum=2):
         """
         Args:
             maxIter (int): number of counting converge 
+            powNum (str): EX 2 = quadratic space. 
         Returns:
             dic : numbers of mistake value
-        """
-        powNum = 2
+        """ 
         numData = self.x1.shape[0]
         alphaDic = {}
         kMap1 = np.zeros([numData, numData])
@@ -44,7 +44,6 @@ class KernelPerceptron(object):
 
         return alphaDic
 
-
     def compSignValue(self, alphaDic, xw, yw, xs, kMap, i, powNum):
         """
         Args:
@@ -64,8 +63,8 @@ class KernelPerceptron(object):
             sumNum += val*yw[j] * self.setKMapValue(kMap, j, i, xw, xs, powNum)
         return np.sign(sumNum)
 
-    def setKMapValue(self, kMap, row, col, xw, xs, p=2):
-        #Return value which have computed before
+    def setKMapValue(self, kMap, row, col, xw, xs, p):
+        # Return value which have computed before
         if kMap[row, col] != 0:
             return kMap[row, col]
 
