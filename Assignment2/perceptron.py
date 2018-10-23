@@ -11,30 +11,37 @@ class Perceptron:
 
     def onlinePerceptron(self, maxIter=1):
         weight = np.zeros((1, self.x1.T.shape[0]))
+        tt = 0
 
         for i in range(0, maxIter):
+            tt = 0
             for t in range(0, self.y1.shape[0]):
 
                 u = np.sign(np.dot(weight, self.x1[t].T))
 
                 if (self.y1[t]*u <= 0):
                     weight = weight + self.y1[t]*self.x1[t]
+                    tt += 1
 
             val1 = self.compAcc(self.x1, self.y1, weight)
             val2 = self.compAcc(self.x2, self.y2, weight)
-            print(val1, val2)
+            print((1-(tt/self.y1.shape[0])), val1, val2)
 
         return weight
 
     def avgPerceptron(self, maxIter=1):
+        # (1*N)
         weight = np.zeros((1, self.x1.T.shape[0]))
         avgWeight = np.zeros((1, self.x1.T.shape[0]))
         count, countSum = 0.0, 0.0
+        tt = 0
 
         for i in range(0, maxIter):
 
+            tt = 0
             for t in range(0, self.y1.shape[0]):
 
+                #(1*N) (N*1)
                 u = np.sign(np.dot(weight, self.x1[t].T))
 
                 if (self.y1[t]*u <= 0):
@@ -44,12 +51,13 @@ class Perceptron:
                     countSum += count
                     weight = weight + self.y1[t]*self.x1[t]
                     count = 0
+                    tt += 1
                 else:
                     count += 1
 
             val1 = self.compAcc(self.x1, self.y1, avgWeight)
             val2 = self.compAcc(self.x2, self.y2, avgWeight)
-            print(val1, val2)
+            print((1-(tt/self.y1.shape[0])), val1, val2, count, countSum)
 
         if count > 0:
             avgWeight = self.compAvgWgt(
@@ -65,6 +73,7 @@ class Perceptron:
         return ct
 
     def compAcc(self, x, y, wgt):
+        #(1*N) (N*1)
         val = np.dot(x, wgt.T)
         return self.correctNum(val, y)/y.shape[0]
 

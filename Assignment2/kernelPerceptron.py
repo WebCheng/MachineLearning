@@ -21,26 +21,28 @@ class KernelPerceptron(object):
             powNum (str): EX 2 = quadratic space. 
         Returns:
             dic : numbers of mistake value
-        """ 
+        """
         numData = self.x1.shape[0]
         alphaDic = {}
         kMap1 = np.zeros([numData, numData])
         kMap2 = np.zeros([numData, numData])
 
         for x in range(0, maxIter):
+            tt = 0
             for i in range(0, numData):
 
                 u = self.compSignValue(
                     alphaDic, self.x1, self.y1, self.x1, kMap1, i, powNum)
                 if (self.y1[i]*u <= 0):
-                    alphaDic.setdefault(i, 0)
-                    alphaDic[i] += 1
+                    alphaDic.setdefault(i, 0.0)
+                    alphaDic[i] += 1.0
+                    tt += 1
 
             val1 = self.compKerAcc(
                 alphaDic, self.x1, self.y1, self.x1, self.y1, kMap1, powNum)
             val2 = self.compKerAcc(
                 alphaDic, self.x1, self.y1, self.x2, self.y2, kMap2, powNum)
-            print(val1, val2)
+            print((1-(tt/self.y1.shape[0])), val1, val2)
 
         return alphaDic
 
@@ -58,7 +60,7 @@ class KernelPerceptron(object):
         Returns:
             int : which class. +1 , 0 , -1.  
         """
-        sumNum = 0
+        sumNum = 0.0
         for j, val in alphaDic.items():
             sumNum += val*yw[j] * self.setKMapValue(kMap, j, i, xw, xs, powNum)
         return np.sign(sumNum)
@@ -68,7 +70,7 @@ class KernelPerceptron(object):
         if kMap[row, col] != 0:
             return kMap[row, col]
 
-        kMap[row, col] = (np.dot(xw[row], xs[col].T) + 1) ** p
+        kMap[row, col] = (np.dot(xw[row], xs[col].T) + 1.0) ** p
         return kMap[row, col]
 
     def compKerAcc(self, alphaDic, xw, yw, xs, ys, kMap, powNum):
