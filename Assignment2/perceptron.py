@@ -22,10 +22,9 @@ class Perceptron:
                 if (self.y1[t]*u <= 0):
                     weight = weight + self.y1[t]*self.x1[t]
                     tt += 1
-
-            val1 = self.compAcc(self.x1, self.y1, weight)
-            val2 = self.compAcc(self.x2, self.y2, weight)
-            print((1-(tt/self.y1.shape[0])), val1, val2)
+ 
+            val = self.compAcc(self.x2, self.y2, weight)
+            print((1-(tt/self.y1.shape[0])), val)
 
         return weight
 
@@ -54,10 +53,9 @@ class Perceptron:
                     tt += 1
                 else:
                     count += 1
-
-            val1 = self.compAcc(self.x1, self.y1, avgWeight)
-            val2 = self.compAcc(self.x2, self.y2, avgWeight)
-            print((1-(tt/self.y1.shape[0])), val1, val2, count, countSum)
+ 
+            val = self.compAcc(self.x2, self.y2, avgWeight)
+            print((1-(tt/self.y1.shape[0])), val)
 
         if count > 0:
             avgWeight = self.compAvgWgt(

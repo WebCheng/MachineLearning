@@ -38,11 +38,9 @@ class KernelPerceptron(object):
                     alphaDic[i] += 1.0
                     tt += 1
 
-            val1 = self.compKerAcc(
-                alphaDic, self.x1, self.y1, self.x1, self.y1, kMap1, powNum)
-            val2 = self.compKerAcc(
+            val = self.compKerAcc(
                 alphaDic, self.x1, self.y1, self.x2, self.y2, kMap2, powNum)
-            print((1-(tt/self.y1.shape[0])), val1, val2)
+            print((1-(tt/self.y1.shape[0])), val)
 
         return alphaDic
 
@@ -82,3 +80,13 @@ class KernelPerceptron(object):
                 err += 1
 
         return (1-(err/numData))
+
+    # def compKplableResult(self, alphaDic, xs, powNum):
+    #     numData = xs.shape[0]
+    #     xw, yw = self.x1, self.y1
+    #     kMap = np.zeros([self.x1.shape[0], self.x1.shape[0]])
+    #     ys = []
+    #     for i in range(0, numData):
+    #         ys.append(self.compSignValue(
+    #             alphaDic, xw, yw, xs, kMap, i, powNum)[0,0])
+    #     return ys

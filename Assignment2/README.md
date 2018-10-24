@@ -6,18 +6,19 @@ get in Bash
 3.  source myenv3.5/bin/activate
 source python env
 4.  cd {path}/ 
-cd path to the place of pa1.py 
-5.  vim pa1.py
+cd path to the place of main.py 
+
+5.  vim main.py
 Setting the input value
-alphaVal = 10 ** (-5)               # learning rate
-limit = 0.5                         # convergence condition
-maxIter = 10000                     # limitation of iteration
-lam = 0.0                           # regularization coefficient
-outPutFile = "pa1_result_"          # Out put file name
-isValidate = True                   # is Out put validation result
-isNormalize = True                  # is Normalize input date
-trainingFile = "PA1_train.csv"      # Training file name
-ValidateFile = "PA1_dev.csv"        # Validate file name
-6.  python pa1.py
-7.  ls
-the path will out csv file for result detail
+maxIter = 15                                # Online\Avg Perceptron Loop number
+kerIter = 1                                 # Kernel Perceptron Loop number
+powNum = 2                                  # Kernel function power number
+fileName1 = "pa2_train.csv"                 # Training File name
+fileName2 = "pa2_valid.csv"                 # Validate File name
+fileName3 = "pa2_test_no_label.csv"         # Validate File name
+
+6.  python main.py
+The screen will show testing results.
+------------ ALG ------------
+TrainingAcc        ValidateAcc
+

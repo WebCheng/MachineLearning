@@ -5,11 +5,16 @@ import perceptron as pct
 import kernelPerceptron as kpt
 import fileHelper as fh
 
-maxIter = 15                     # Loop number
-fileName1 = "pa2_train.csv"      # Training File name
-fileName2 = "pa2_valid.csv"      # Validate File name
-fileName3 = "pa2_test_no_label.csv"      # Validate File name
-powNum = 2                       # Kernel function power number
+
+# =============================================================================
+# ################ Main Function ################
+# =============================================================================
+maxIter = 15                                # Online\Avg Perceptron Loop number
+kerIter = 1                                 # Kernel Perceptron Loop number
+powNum = 2                                  # Kernel function power number
+fileName1 = "pa2_train.csv"                 # Training File name
+fileName2 = "pa2_valid.csv"                 # Validate File name
+fileName3 = "pa2_test_no_label.csv"         # Validate File name
 
 print("\n ------------ ImportDaTa ------------")
 (par1, rst1) = hp.importCsv(fileName1)
@@ -20,21 +25,19 @@ par1 = np.matrix(par1)
 rst1 = np.matrix(rst1)
 par2 = np.matrix(par2)
 rst2 = np.matrix(rst2)
-print(par1.shape)
-print(par2.shape)
 
 print("\n ------------ Perceptron ------------")
 pt = pct.Perceptron(par1, rst1, par2, rst2)
-w = pt.onlinePerceptron(15)
+w = pt.onlinePerceptron(maxIter)
 
-# print("\n ------------ AvgPerceptron ------------")
-# pt = pct.Perceptron(par1, rst1, par2, rst2)
-# w = pt.avgPerceptron(15)
+print("\n ------------ AvgPerceptron ------------")
+pt = pct.Perceptron(par1, rst1, par2, rst2)
+w = pt.avgPerceptron(maxIter)
 
 print("\n ------------ kerPerceptron ------------")
 print(dt.datetime.now())
 kp = kpt.KernelPerceptron(par1, rst1, par2, rst2)
-kp.kernelPerceptron(15,1)
+kp.kernelPerceptron(kerIter, powNum)
 # print("\n ------------ kerPerceptron ------------")
 # kp.kernelPerceptron(15,2)
 # print("\n ------------ kerPerceptron ------------")
@@ -43,11 +46,19 @@ kp.kernelPerceptron(15,1)
 # kp.kernelPerceptron(15,7)
 # print("\n ------------ kerPerceptron ------------")
 # kp.kernelPerceptron(15,15)
-# print(dt.datetime.now())
-
+print(dt.datetime.now())
 
 # par3 = hp.importCsv(fileName3, False)
 # result = hp.predictValue(par3, w)
-# fOut = fh.fileHelper("oplabel.csv")
+# fOut = fh.fileHelper("oplabel2.csv")
+# fOut.outputResult(result)
+# fOut.fileClose()
+
+# alphaDic = kp.kernelPerceptron(4, 3)
+# print(dt.datetime.now())
+# xs = hp.importCsv(fileName3, False)
+# print(xs.shape)
+# result = kp.compKplableResult(alphaDic, xs, 3)
+# fOut = fh.fileHelper("kplable.csv")
 # fOut.outputResult(result)
 # fOut.fileClose()
