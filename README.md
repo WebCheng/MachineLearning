@@ -1,13 +1,13 @@
 # MachineLearning
 Using python3.7.0
 
-## 1. Assignment1
+## Assignment1
 Linear regression
 
-## 1. Assignment1
+## Assignment2
 Perceptron with Kernel
 
-## 1. Assignment1
+## Assignment3
 Disition tree with Bagging and AdaBoost
 
 
